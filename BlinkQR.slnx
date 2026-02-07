@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="BlinkQR.Application/BlinkQR.Application.csproj" />
+  <Project Path="BlinkQR.Domain/BlinkQR.Domain.csproj" />
+  <Project Path="BlinkQR.Infrastructure/BlinkQR.Infrastructure.csproj" />
+  <Project Path="BlinkQR.Tests/BlinkQR.Tests.csproj" />
+  <Project Path="BlinkQR/BlinkQR.App.csproj" />
+</Solution>
