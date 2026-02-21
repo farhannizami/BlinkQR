@@ -73,7 +73,7 @@ namespace BlinkQR.Application.ViewModels
 
                 if (result != null)
                 {
-                    ScanResult = result.Text;
+                    ScanResult = result.Text; // Currently not used in the UI, but can be useful for debugging or future features
                     AddToHistory(result.Text);
                     StopScanning();
                     return;
