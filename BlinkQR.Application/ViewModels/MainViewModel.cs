@@ -1,4 +1,4 @@
-﻿using BlinkQR.Application.UseCases;
+using BlinkQR.Application.UseCases;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -16,6 +16,17 @@ namespace BlinkQR.Application.ViewModels
             private set
             {
                 _scanResult = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private byte[]? _cameraPreviewData;
+        public byte[]? CameraPreviewData
+        {
+            get => _cameraPreviewData;
+            private set
+            {
+                _cameraPreviewData = value;
                 OnPropertyChanged();
             }
         }
@@ -39,31 +50,39 @@ namespace BlinkQR.Application.ViewModels
         public async Task StartScanningAsync()
         {
             if (IsScanning)
+            {
                 return;
+            }
 
             IsScanning = true;
             _cts = new CancellationTokenSource();
 
-            var result = await Task.Run(() =>
+            while (!_cts.IsCancellationRequested)
             {
-                while (!_cts.IsCancellationRequested)
+                var (frame, result) = _scanUseCase.ExecuteWithFrame();
+
+                if (frame != null)
                 {
-                    var r = _scanUseCase.Execute();
-                    if (r != null)
-                        return r;
+                    CameraPreviewData = frame.Data;
                 }
 
-                return null;
-            });
+                if (result != null)
+                {
+                    ScanResult = result.Text;
+                    StopScanning();
+                    return;
+                }
 
-            // ✅ Back on UI thread here
-            if (result != null)
-            {
-                ScanResult = result.Text;
-                StopScanning();
+                try
+                {
+                    await Task.Delay(33, _cts.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    return;
+                }
             }
         }
-
 
         public void StopScanning()
         {
@@ -71,11 +90,13 @@ namespace BlinkQR.Application.ViewModels
             {
                 return;
             }
+
             _cts?.Cancel();
             IsScanning = false;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
