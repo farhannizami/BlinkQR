@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace BlinkQR.App.Converters
+namespace BlinkQR.Converters
 {
     public sealed class ByteArrayToBitmapImageConverter : IValueConverter
     {
