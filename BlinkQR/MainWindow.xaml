@@ -2,38 +2,40 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:BlinkQR.Converters"
-        Title="BlinkQR"
-        Height="560"
-        Width="800">
+        Title="BlinkQR">
 
     <Window.Resources>
         <converters:ByteArrayToBitmapImageConverter x:Key="ByteArrayToBitmapImageConverter"/>
     </Window.Resources>
 
     <Grid>
-        <StackPanel VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <!-- camera preview -->
+            <RowDefinition Height="Auto" />
+            <!-- scan result -->
+            <RowDefinition Height="Auto" />
+            <!-- button -->
+        </Grid.RowDefinitions>
 
-            <Border BorderBrush="#D0D0D0"
-                    BorderThickness="1"
-                    Width="480"
-                    Height="320"
-                    Margin="0,0,0,12">
-                <Image Source="{Binding CameraPreviewData, Converter={StaticResource ByteArrayToBitmapImageConverter}}"
-                       Stretch="Uniform"/>
-            </Border>
+        <Border Grid.Row="0" Margin="20">
+            <Image Source="{Binding CameraPreviewData, Converter={StaticResource ByteArrayToBitmapImageConverter}}"
+               Stretch="Uniform"/>
+        </Border>
 
-            <TextBlock Text="{Binding ScanResult}"
-                       FontSize="16"
-                       TextAlignment="Center"
-                       Width="480"
-                       TextWrapping="Wrap"
-                       Margin="0,0,0,12"/>
+        <TextBlock Grid.Row="1"
+               Text="{Binding ScanResult}"
+               FontSize="24"
+               TextAlignment="Center"
+               TextWrapping="Wrap"
+               Margin="20"/>
 
-            <Button Content="Scan QR"
-                    Width="120"
-                    Height="40"
-                    Click="StartScan_Click"/>
-        </StackPanel>
+        <Button Grid.Row="2"
+            Content="Scan QR"
+            Width="120"
+            Height="40"
+            HorizontalAlignment="Center"
+            Margin="20"
+            Click="StartScan_Click"/>
     </Grid>
 </Window>
