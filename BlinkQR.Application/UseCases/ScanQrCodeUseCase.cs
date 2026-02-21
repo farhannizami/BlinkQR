@@ -1,8 +1,5 @@
-﻿using BlinkQR.Domain.Abstractions;
+using BlinkQR.Domain.Abstractions;
 using BlinkQR.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BlinkQR.Application.UseCases
 {
@@ -17,14 +14,21 @@ namespace BlinkQR.Application.UseCases
             _scanner = scanner;
         }
 
-        public ScanResult? Execute()
+        public (CameraFrame? Frame, ScanResult? Result) ExecuteWithFrame()
         {
             var frame = _camera.CaptureFrame();
-            if(frame == null)
+            if (frame == null)
             {
-                return null;
+                return (null, null);
             }
-            return _scanner.Scan(frame);
+
+            return (frame, _scanner.Scan(frame));
+        }
+
+        public ScanResult? Execute()
+        {
+            var (_, result) = ExecuteWithFrame();
+            return result;
         }
     }
 }
