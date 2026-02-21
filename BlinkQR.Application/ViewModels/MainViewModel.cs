@@ -1,4 +1,5 @@
 using BlinkQR.Application.UseCases;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -6,8 +7,12 @@ namespace BlinkQR.Application.ViewModels
 {
     public sealed class MainViewModel : INotifyPropertyChanged
     {
+        public ObservableCollection<string> ScanHistory { get; } = [];
+
         private readonly ScanQrCodeUseCase _scanUseCase;
         private CancellationTokenSource? _cts;
+
+        private const int MaxHistory = 10;
 
         private string? _scanResult;
         public string? ScanResult
@@ -69,6 +74,7 @@ namespace BlinkQR.Application.ViewModels
                 if (result != null)
                 {
                     ScanResult = result.Text;
+                    AddToHistory(result.Text);
                     StopScanning();
                     return;
                 }
@@ -100,6 +106,17 @@ namespace BlinkQR.Application.ViewModels
         private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void AddToHistory(string text)
+        {
+            if (ScanHistory.Contains(text))
+                return;
+
+            ScanHistory.Insert(0, text); // newest on top
+
+            if (ScanHistory.Count > MaxHistory)
+                ScanHistory.RemoveAt(ScanHistory.Count - 1);
         }
     }
 }
