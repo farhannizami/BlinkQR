@@ -9,33 +9,34 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
-            <!-- camera preview -->
-            <RowDefinition Height="Auto" />
-            <!-- scan result -->
-            <RowDefinition Height="Auto" />
-            <!-- button -->
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Margin="20">
+        <!-- LEFT SIDE: Camera -->
+        <Border Grid.Column="0" Margin="20">
             <Image Source="{Binding CameraPreviewData, Converter={StaticResource ByteArrayToBitmapImageConverter}}"
                Stretch="Uniform"/>
         </Border>
 
-        <TextBlock Grid.Row="1"
-               Text="{Binding ScanResult}"
-               FontSize="24"
-               TextAlignment="Center"
-               TextWrapping="Wrap"
-               Margin="20"/>
+        <!-- RIGHT SIDE: History -->
+        <StackPanel Grid.Column="1" Margin="20">
 
-        <Button Grid.Row="2"
-            Content="Scan QR"
-            Width="120"
-            Height="40"
-            HorizontalAlignment="Center"
-            Margin="20"
-            Click="StartScan_Click"/>
+            <TextBlock Text="Scan History"
+                   FontWeight="Bold"
+                   FontSize="16"
+                   Margin="0,0,0,10"/>
+
+            <ListBox ItemsSource="{Binding ScanHistory}"
+                 Height="400"/>
+
+            <Button Content="Scan QR"
+                Width="120"
+                Height="40"
+                HorizontalAlignment="Left"
+                Margin="0,20,0,0"
+                Click="StartScan_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
