@@ -2,41 +2,58 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:BlinkQR.Converters"
-        Title="BlinkQR">
+        Title="BlinkQR"
+        MinWidth="700"
+        MinHeight="500">
 
     <Window.Resources>
-        <converters:ByteArrayToBitmapImageConverter x:Key="ByteArrayToBitmapImageConverter"/>
+        <converters:ByteArrayToBitmapImageConverter
+            x:Key="ByteArrayToBitmapImageConverter"/>
     </Window.Resources>
 
-    <Grid>
+    <Grid Margin="20">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT SIDE: Camera -->
-        <Border Grid.Column="0" Margin="20">
-            <Image Source="{Binding CameraPreviewData, Converter={StaticResource ByteArrayToBitmapImageConverter}}"
-               Stretch="Uniform"/>
+        <!-- LEFT SIDE -->
+        <Border Grid.Column="0"
+                Margin="0,0,20,0"
+                BorderBrush="#444"
+                BorderThickness="1">
+
+            <Image Source="{Binding CameraPreviewData,
+                            Converter={StaticResource ByteArrayToBitmapImageConverter}}"
+                   Stretch="Uniform"/>
         </Border>
 
-        <!-- RIGHT SIDE: History -->
-        <StackPanel Grid.Column="1" Margin="20">
+        <!-- RIGHT SIDE -->
+        <Grid Grid.Column="1">
 
-            <TextBlock Text="Scan History"
-                   FontWeight="Bold"
-                   FontSize="16"
-                   Margin="0,0,0,10"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <ListBox ItemsSource="{Binding ScanHistory}"
-                 Height="400"/>
+            <TextBlock Grid.Row="0"
+                       Text="Scan History"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,0,0,10"/>
 
-            <Button Content="Scan QR"
-                Width="120"
-                Height="40"
-                HorizontalAlignment="Left"
-                Margin="0,20,0,0"
-                Click="StartScan_Click"/>
-        </StackPanel>
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding ScanHistory}"
+                     Margin="0,0,0,10"/>
+
+            <Button Grid.Row="2"
+                    Content="Scan QR"
+                    Width="120"
+                    Height="40"
+                    HorizontalAlignment="Left"
+                    Click="StartScan_Click"/>
+        </Grid>
     </Grid>
 </Window>
