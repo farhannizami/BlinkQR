@@ -27,6 +27,9 @@ namespace BlinkQR.Infrastructure.Camera
                 return null;
             }
 
+            // horizontal flip (mirror correction)
+            Cv2.Flip(mat, mat, FlipMode.Y);
+
             return new CameraFrame(mat.ToBytes(), mat.Width, mat.Height);
         }
 
