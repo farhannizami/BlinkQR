@@ -13,6 +13,7 @@ namespace BlinkQR
         {
             InitializeComponent();
             DataContext = App.Services.GetRequiredService<MainViewModel>();
+            StartScan_Click(this, new RoutedEventArgs()); // Auto-start scanning on app launch
         }
 
         private async void StartScan_Click(object sender, RoutedEventArgs e)
