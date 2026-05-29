@@ -36,6 +36,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
@@ -48,12 +49,34 @@
                      ItemsSource="{Binding ScanHistory}"
                      Margin="0,0,0,10"/>
 
-            <Button Grid.Row="2"
-                    Content="Scan QR"
-                    Width="120"
-                    Height="40"
-                    HorizontalAlignment="Left"
-                    Click="StartScan_Click"/>
+            <TextBlock Grid.Row="2"
+               Text="{Binding Status}"
+               Margin="0,0,0,10"
+               Foreground="#666"
+               TextWrapping="Wrap"/>
+
+            <Button Grid.Row="3"
+                Content="Scan Again"
+                Width="120"
+                Height="40"
+                HorizontalAlignment="Left"
+                Click="StartScan_Click">
+
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility"
+                        Value="Visible"/>
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsScanning}"
+                                 Value="True">
+                                <Setter Property="Visibility"
+                                Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style> 
+            </Button>
         </Grid>
     </Grid>
 </Window>

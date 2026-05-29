@@ -47,6 +47,17 @@ namespace BlinkQR.Application.ViewModels
             }
         }
 
+        private string _status = "Ready";
+        public string Status
+        {
+            get => _status;
+            private set
+            {
+                _status = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel(ScanQrCodeUseCase scanUseCase)
         {
             _scanUseCase = scanUseCase;
@@ -60,6 +71,7 @@ namespace BlinkQR.Application.ViewModels
             }
 
             IsScanning = true;
+            Status = "Scanning...";
             _cts = new CancellationTokenSource();
 
             while (!_cts.IsCancellationRequested)
@@ -75,6 +87,7 @@ namespace BlinkQR.Application.ViewModels
                 {
                     ScanResult = result.Text; // Currently not used in the UI, but can be useful for debugging or future features
                     AddToHistory(result.Text);
+                    Status = $"QR Detected: {result.Text}";
                     StopScanning();
                     return;
                 }
